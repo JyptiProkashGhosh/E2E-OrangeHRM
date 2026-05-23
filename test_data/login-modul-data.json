@@ -1,0 +1,6 @@
+{
+    "wrong_password": "abcd1234",
+    "invalid_credential_message": "Invalid credentials",
+    "wrong_username": "testuser"
+
+}

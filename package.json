@@ -1,0 +1,26 @@
+{
+  "name": "e2eorangehrm",
+  "version": "1.0.0",
+  "description": "E2E test automation for OrangeHRM application using Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test_demo": "cross-env ENV_NAME=demo npx playwright test --headed",
+    "test_dev": "cross-env ENV_NAME=dev npx playwright test",
+    "test_demo_ui": "cross-env ENV_NAME=demo npx playwright test --ui"
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^25.9.0"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.4.2"
+  }
+}

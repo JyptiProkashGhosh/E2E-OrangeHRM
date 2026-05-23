@@ -1,0 +1,133 @@
+name: E2E Tests - OrangeHRM
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run tests daily at 2:00 AM UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to run tests"
+        required: true
+        default: "demo"
+        type: choice
+        options:
+          - demo
+          - dev
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x]
+        browser: [chromium]
+        # Uncomment to test on multiple browsers
+        # browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Set environment variables
+        env:
+          ENV_NAME: ${{ github.event.inputs.environment || 'demo' }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
+          echo "SECRET_KEY=$SECRET_KEY" >> $GITHUB_ENV
+
+      - name: Verify environment configuration
+        run: |
+          echo "Environment: ${{ env.ENV_NAME }}"
+          if [ -z "${{ secrets.SECRET_KEY }}" ]; then
+            echo "Warning: SECRET_KEY not set in secrets"
+          fi
+
+      - name: Run Playwright tests
+        run: npm run test_dev
+        env:
+          CI: true
+          ENV_NAME: ${{ github.event.inputs.environment || 'demo' }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-artifacts-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 7
+
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: "test-results/results.xml"
+          check_name: "Playwright Test Results"
+
+      - name: Comment PR with test results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const testResults = JSON.parse(fs.readFileSync('test-results/results.json', 'utf8'));
+            const totalTests = testResults.stats.expected || 0;
+            const passedTests = testResults.stats.expected - testResults.stats.unexpected || 0;
+
+            const comment = `
+            ## 🧪 E2E Test Results
+
+            **Environment:** ${{ env.ENV_NAME }}
+            **Browser:** ${{ matrix.browser }}
+
+            - ✅ Passed: ${passedTests}
+            - ❌ Failed: ${testResults.stats.unexpected || 0}
+            - ⏭️ Skipped: ${testResults.stats.flaky || 0}
+
+            [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  notify:
+    if: failure()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify failure
+        run: |
+          echo "E2E tests failed!"
+          echo "Check the logs at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
