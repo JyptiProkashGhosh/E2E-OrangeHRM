@@ -1,4 +1,4 @@
-import { test as baseTest } from "../fixtures/pom-fixtures";
+import { test as baseTest } from "./pom-fixtures";
 import CommonUtil from "../utils/CommonUtil";
 
 type CommonFixturesType = {
