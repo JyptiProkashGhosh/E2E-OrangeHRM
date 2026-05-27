@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [main, develop]
   schedule:
-    # Run tests daily at 2:00 AM UTC
     - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
@@ -31,17 +30,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x]
-        browser: [chromium]
-        # Uncomment to test on multiple browsers
-        # browser: [chromium, firefox, webkit]
+        node-version: [18.x, 20.x]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -49,82 +45,81 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Set environment variables
-        env:
-          ENV_NAME: ${{ github.event.inputs.environment || 'demo' }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
-          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
-          echo "SECRET_KEY=$SECRET_KEY" >> $GITHUB_ENV
-
-      - name: Verify environment configuration
-        run: |
-          echo "Environment: ${{ env.ENV_NAME }}"
-          if [ -z "${{ secrets.SECRET_KEY }}" ]; then
-            echo "Warning: SECRET_KEY not set in secrets"
-          fi
-
-      - name: Run Playwright tests
-        run: npm run test_dev
+      - name: Run E2E tests
         env:
           CI: true
           ENV_NAME: ${{ github.event.inputs.environment || 'demo' }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: npm run test_dev
 
-      - name: Upload test results
+      - name: Generate test report
+        if: always()
+        run: npx playwright show-report --quiet || true
+
+      - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report-node-${{ matrix.node-version }}
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload test artifacts
+      - name: Upload Test Results
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-artifacts-${{ matrix.browser }}
+          name: test-results-node-${{ matrix.node-version }}
           path: test-results/
           retention-days: 7
 
-      - name: Publish test results
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: "test-results/results.xml"
-          check_name: "Playwright Test Results"
-
       - name: Comment PR with test results
         if: github.event_name == 'pull_request' && always()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const testResults = JSON.parse(fs.readFileSync('test-results/results.json', 'utf8'));
-            const totalTests = testResults.stats.expected || 0;
-            const passedTests = testResults.stats.expected - testResults.stats.unexpected || 0;
+            const path = require('path');
 
-            const comment = `
-            ## 🧪 E2E Test Results
+            let testInfo = '## 🧪 E2E Test Results\n\n';
+            testInfo += `**Environment:** ${{ github.event.inputs.environment || 'demo' }}\n`;
+            testInfo += `**Node Version:** ${{ matrix.node-version }}\n\n`;
 
-            **Environment:** ${{ env.ENV_NAME }}
-            **Browser:** ${{ matrix.browser }}
+            try {
+              const resultsPath = 'test-results/results.json';
+              if (fs.existsSync(resultsPath)) {
+                const testResults = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+                const stats = testResults.stats || {};
 
-            - ✅ Passed: ${passedTests}
-            - ❌ Failed: ${testResults.stats.unexpected || 0}
-            - ⏭️ Skipped: ${testResults.stats.flaky || 0}
+                testInfo += `| Metric | Count |\n`;
+                testInfo += `|--------|-------|\n`;
+                testInfo += `| ✅ Passed | ${stats.expected || 0} |\n`;
+                testInfo += `| ❌ Failed | ${stats.unexpected || 0} |\n`;
+                testInfo += `| ⏭️ Skipped | ${stats.skipped || 0} |\n`;
+              } else {
+                testInfo += '⚠️ No test results file found.\n';
+              }
+            } catch (error) {
+              testInfo += `⚠️ Error reading test results: ${error.message}\n`;
+            }
 
-            [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            `;
+            testInfo += `\n[📊 View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
+              body: testInfo
             });
 
   notify:
@@ -132,7 +127,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Notify failure
+      - name: Notify test failure
         run: |
-          echo "E2E tests failed!"
-          echo "Check the logs at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "❌ E2E tests failed on commit ${{ github.sha }}"
+          echo "View details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
