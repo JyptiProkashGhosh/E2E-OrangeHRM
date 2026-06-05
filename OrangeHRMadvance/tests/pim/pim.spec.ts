@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/auth.fixture';
-import { Helpers } from '../../utils/helpers';
+import { test, expect } from '../../src/fixtures/auth.fixture';
+import { Helpers } from '../../src/utils/helpers';
 import * as fs from 'fs';
 
 test.describe('PIM - Employee Management Lifecycle', () => {
@@ -28,9 +28,9 @@ test.describe('PIM - Employee Management Lifecycle', () => {
     await dashboardPage.navigate('/web/index.php/dashboard/index');
   });
 
-  test('Should perform complete Employee lifecycle (Add -> Search -> Delete) @pim @smoke', async ({ 
-    dashboardPage, 
-    pimPage 
+  test('Should perform complete Employee lifecycle (Add -> Search -> Delete) @pim @smoke', async ({
+    dashboardPage,
+    pimPage
   }) => {
     // 1. Navigate to PIM module
     await dashboardPage.clickPIM();
@@ -42,10 +42,10 @@ test.describe('PIM - Employee Management Lifecycle', () => {
     // 3. Add Employee with details and dynamic file upload
     const customEmpId = Helpers.getRandomNumberString(5);
     employeeId = await pimPage.addEmployee(
-      firstName, 
-      lastName, 
-      'Automation', 
-      customEmpId, 
+      firstName,
+      lastName,
+      'Automation',
+      customEmpId,
       avatarPath
     );
 

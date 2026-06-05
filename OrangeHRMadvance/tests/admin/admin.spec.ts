@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/auth.fixture';
-import { Helpers } from '../../utils/helpers';
+import { test, expect } from '../../src/fixtures/auth.fixture';
+import { Helpers } from '../../src/utils/helpers';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -106,7 +106,7 @@ test.describe('Admin Module - User, Job, and Organization Management', () => {
       // Enter a 3-character username
       const invalidUsername = 'abc';
       const fullName = `${employeeFirstName} ${employeeLastName}`;
-      
+
       // Fill form without saving to see immediate validation error
       const roleDropdown = adminPage.page.locator('.oxd-input-group').filter({ hasText: 'User Role' }).locator('.oxd-select-text');
       await adminPage.clickElement(roleDropdown, 'User Role Dropdown');

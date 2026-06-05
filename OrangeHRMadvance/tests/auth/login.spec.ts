@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/auth.fixture';
-import { TestData } from '../../utils/test-data';
+import { test, expect } from '../../src/fixtures/auth.fixture';
+import { TestData } from '../../src/utils/test-data';
 
 test.describe('Login Functionality - Negative & Positive', () => {
   // Override storageState for this block so we start completely clean (unauthenticated)
@@ -11,7 +11,7 @@ test.describe('Login Functionality - Negative & Positive', () => {
 
   test('Should login successfully with valid credentials @smoke', async ({ loginPage, page }) => {
     await loginPage.login(TestData.auth.adminUsername, TestData.auth.adminPassword);
-    
+
     // Validate redirect to dashboard
     await expect(page).toHaveURL(/.*dashboard.*/);
     const dashboardHeader = page.locator('.oxd-topbar-header-title h6');

@@ -1,6 +1,6 @@
 import { test as setup, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
-import { TestData } from '../utils/test-data';
+import { LoginPage } from '../src/pages/login.page';
+import { TestData } from '../src/utils/test-data';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -8,7 +8,7 @@ const authFile = path.join(process.cwd(), 'playwright/.auth/user.json');
 
 setup('authenticate as Admin', async ({ page }) => {
   console.log('[Auth Setup] Starting global authentication setup...');
-  
+
   const loginPage = new LoginPage(page);
   await loginPage.goto();
   await loginPage.login(TestData.auth.adminUsername, TestData.auth.adminPassword);

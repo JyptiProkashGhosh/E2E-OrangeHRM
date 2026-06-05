@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth.fixture';
+import { test, expect } from '../../src/fixtures/auth.fixture';
 
 test.describe('Dashboard - Smoke Suite', () => {
   test.describe('Sidebar Navigation', () => {
