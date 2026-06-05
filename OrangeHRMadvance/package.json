@@ -1,0 +1,19 @@
+{
+  "name": "orangehrm-playwright-advance",
+  "version": "1.0.0",
+  "description": "Advanced Playwright E2E automation framework for OrangeHRM",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:pim": "playwright test --grep @pim",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,62 @@
+name: Playwright Regression Tests
+
+on:
+  schedule:
+    # Run nightly at 12:00 AM UTC (5:30 AM IST)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  regression-tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: OrangeHRMadvance
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: OrangeHRMadvance/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get Playwright Version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -p "require('./package.json').devDependencies['@playwright/test']")" >> $GITHUB_ENV
+
+      - name: Cache Playwright Browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}-${{ runner.os }}
+
+      - name: Install Active Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Install System Dependencies for Active Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
+
+      - name: Run Full Regression Suite
+        run: npx playwright test
+        env:
+          CI: true
+
+      - name: Publish Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-test-report
+          path: OrangeHRMadvance/playwright-report/
+          retention-days: 14

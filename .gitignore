@@ -1,0 +1,20 @@
+# Dependencies
+OrangeHRMadvance/node_modules/
+node_modules/
+
+# Test outputs and reports
+OrangeHRMadvance/test-results/
+OrangeHRMadvance/playwright-report/
+OrangeHRMadvance/blob-report/
+test-results/
+playwright-report/
+
+# Session storage state (Contains active cookies and credentials!)
+OrangeHRMadvance/playwright/.auth/
+playwright/.auth/
+
+# Logs and environment files
+*.log
+.env
+.DS_Store
+Thumbs.db
