@@ -16,5 +16,69 @@ playwright/.auth/
 # Logs and environment files
 *.log
 .env
+.env.local
 .DS_Store
 Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+*.c9/
+*.iml
+out/
+.history
+
+# Generated report files
+/allure-results/
+/allure-report/
+**/coverage/
+**/*.lcov
+*.json.log
+
+# Temporary and backup files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+.cache/
+.parcel-cache/
+dist-ssr/
+
+!tsconfig.json
+
+
+IMPLEMENTATION_GUIDE.md
+VISUAL_REGRESSION.md
+QUICK_REFERENCE.md
+
+
+
+# Optional npm cache
+.npm
+
+# ESLint cache
+.eslintcache
+
+# Important documentation and config (DO NOT IGNORE)
+!package.json
+!playwright.config.ts
+!.env.example
+!.eslintrc.json
+!.prettierrc.json
+!.percy.yml
+!README.md

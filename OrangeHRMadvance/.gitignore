@@ -4,11 +4,11 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.auth/
-
+/.husky/
 # Environment files
 .env
-.env.*.local
-.env.local.php
+.env.local
+
 
 # Logs
 npm-debug.log*
