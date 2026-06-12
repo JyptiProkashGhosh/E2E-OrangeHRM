@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "static": {
+    "cleanUrls": true
+  },
+  "discovery": {
+    "allowed-hosts": ["opensource-demo.orangehrmlive.com"],
+    "network-idle-timeout": 750
+  },
+  "globals": {
+    "widths": [375, 768, 1280]
+  },
+  "snapshot": {
+    "min-height": 1024
+  }
+}
