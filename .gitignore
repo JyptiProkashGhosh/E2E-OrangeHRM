@@ -1,50 +1,47 @@
-# Dependencies
-OrangeHRMadvance/node_modules/
+﻿# Dependencies
 node_modules/
+OrangeHRMadvance/node_modules/
 
 # Test outputs and reports
-OrangeHRMadvance/test-results/
-OrangeHRMadvance/playwright-report/
-OrangeHRMadvance/blob-report/
-test-results/
-playwright-report/
-blob-report/
-# Session storage state (Contains active cookies and credentials!)
-OrangeHRMadvance/playwright/.auth/
-playwright/.auth/
-
-
-OrangeHRMadvance/.husky/
-.husky/
-OrangeHRMadvance/allure-results/
-OrangeHRMadvance/allure-report/
 allure-results/
+OrangeHRMadvance/allure-results/
 allure-report/
-OrangeHRMadvance/.env.local
+OrangeHRMadvance/allure-report/
+playwright/.auth/
+OrangeHRMadvance/playwright/.auth/
+playwright-report/
+OrangeHRMadvance/playwright-report/
+blob-report/
+OrangeHRMadvance/blob-report/
+
+# Local tooling and configuration
+.husky/
+OrangeHRMadvance/.husky/
 .env.local
-OrangeHRMadvance/.eslintrc.json
+.env.local.*
+OrangeHRMadvance/.env.local
 .eslintrc.json
-OrangeHRMadvance/.prettierignore
+OrangeHRMadvance/.eslintrc.json
 .prettierignore
-OrangeHRMadvance/.prettierrc.json
+OrangeHRMadvance/.prettierignore
 .prettierrc.json
-OrangeHRMadvance/.lintstagedrc.json
+OrangeHRMadvance/.prettierrc.json
 .lintstagedrc.json
-OrangeHRMadvance/.percy.yml
+OrangeHRMadvance/.lintstagedrc.json
 .percy.yml
-OrangeHRMadvance/IMPLEMENTATION_GUIDE.md
+OrangeHRMadvance/.percy.yml
+
+# Project documentation and config files to ignore
 IMPLEMENTATION_GUIDE.md
-OrangeHRMadvance/QUICK_REFERENCE.md
+OrangeHRMadvance/IMPLEMENTATION_GUIDE.md
 QUICK_REFERENCE.md
-OrangeHRMadvance/tsconfig.json
+OrangeHRMadvance/QUICK_REFERENCE.md
 tsconfig.json
-OrangeHRMadvance/VISUAL_REGRESSION.md
+OrangeHRMadvance/tsconfig.json
 VISUAL_REGRESSION.md
-
-
-
-
-
+OrangeHRMadvance/VISUAL_REGRESSION.md
+playwright-e2e.SKILL.md
+OrangeHRMadvance/playwright-e2e.SKILL.md
 
 # Important documentation and config (DO NOT IGNORE)
 !README.md
