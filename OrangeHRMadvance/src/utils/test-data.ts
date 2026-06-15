@@ -10,6 +10,8 @@ export const TestData = {
     login: '/web/index.php/auth/login',
     dashboard: '/web/index.php/dashboard/index',
     pim: '/web/index.php/pim/viewEmployeeList',
+    leave: '/web/index.php/leave/viewLeaveList',
+    leaveApply: '/web/index.php/leave/applyLeave',
   },
 
   // Credentials - loaded from environment variables

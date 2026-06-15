@@ -10,6 +10,7 @@
     "test:smoke": "playwright test --grep @smoke",
     "test:pim": "playwright test --grep @pim",
     "test:admin": "playwright test --grep @admin",
+    "test:leave": "playwright test --grep @leave",
     "test:cross-browser": "playwright test --grep @cross-browser",
     "test:visual": "playwright test --grep @visual",
     "test:chromium": "playwright test --project chromium",

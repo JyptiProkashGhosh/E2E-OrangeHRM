@@ -3,6 +3,7 @@ import { LoginPage } from '../pages/login.page';
 import { DashboardPage } from '../pages/dashboard.page';
 import { PIMPage } from '../pages/pim.page';
 import { AdminPage } from '../pages/admin.page';
+import { LeavePage } from '../pages/leave.page';
 
 // Declare custom fixtures
 type OrangeHRMFixtures = {
@@ -10,6 +11,7 @@ type OrangeHRMFixtures = {
   dashboardPage: DashboardPage;
   pimPage: PIMPage;
   adminPage: AdminPage;
+  leavePage: LeavePage;
 };
 
 // Extend base test to include our page objects
@@ -32,6 +34,11 @@ export const test = base.extend<OrangeHRMFixtures>({
   adminPage: async ({ page }, use) => {
     const adminPage = new AdminPage(page);
     await use(adminPage);
+  },
+
+  leavePage: async ({ page }, use) => {
+    const leavePage = new LeavePage(page);
+    await use(leavePage);
   },
 });
 

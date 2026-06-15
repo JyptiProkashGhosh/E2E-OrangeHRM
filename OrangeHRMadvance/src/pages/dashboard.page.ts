@@ -37,6 +37,13 @@ export class DashboardPage extends BasePage {
   }
 
   /**
+   * Navigates to Leave module.
+   */
+  async clickLeave(): Promise<void> {
+    await this.clickSidebarMenuLink('Leave');
+  }
+
+  /**
    * Navigates to Dashboard module.
    */
   async clickDashboard(): Promise<void> {

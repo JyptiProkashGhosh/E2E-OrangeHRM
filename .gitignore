@@ -20,7 +20,11 @@ OrangeHRMadvance/.husky/
 .env.local
 .env.local.*
 OrangeHRMadvance/.env.local
-.eslintrc.json
+.eslintrc.jsongit rm -r --cached .husky OrangeHRMadvance/.husky
+git rm --cached .env.local OrangeHRMadvance/.env.local .eslintrc.json .prettierignore .prettierrc.json .lintstagedrc.json tsconfig.json VISUAL_REGRESSION.md OrangeHRMadvance/VISUAL_REGRESSION.md playwright-e2e.SKILL.md OrangeHRMadvance/playwright-e2e.SKILL.md
+git add .gitignore
+git commit -m "chore: stop tracking local config and report files"
+git push origin main
 OrangeHRMadvance/.eslintrc.json
 .prettierignore
 OrangeHRMadvance/.prettierignore
