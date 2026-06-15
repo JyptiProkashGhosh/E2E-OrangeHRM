@@ -59,12 +59,6 @@ jobs:
         env:
           CI: true
 
-      - name: Upload Test Report Artifact
-        if: always()
-        uses: actions/checkout@v4 # No-op or we just upload the directory directly
-        # Note: actions/upload-artifact@v4 is used to upload artifacts
-        continue-on-error: true
-
       - name: Publish Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
