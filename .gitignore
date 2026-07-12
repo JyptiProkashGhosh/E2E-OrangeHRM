@@ -1,55 +1,27 @@
-﻿# Dependencies
+# Node.js
 node_modules/
-OrangeHRMadvance/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# Test outputs and reports
-allure-results/
-OrangeHRMadvance/allure-results/
-allure-report/
-OrangeHRMadvance/allure-report/
-playwright/.auth/
-OrangeHRMadvance/playwright/.auth/
-playwright-report/
-OrangeHRMadvance/playwright-report/
-blob-report/
-OrangeHRMadvance/blob-report/
+# Playwright Test Outputs
+automation/reports/
+automation/screenshots/
+automation/videos/
+automation/traces/
+automation/test-results/
+automation/allure-results/
+automation/playwright-report/
 
-# Local tooling and configuration
-.husky/
-OrangeHRMadvance/.husky/
-.env.local
-.env.local.*
-OrangeHRMadvance/.env.local
-.eslintrc.jsongit rm -r --cached .husky OrangeHRMadvance/.husky
-git rm --cached .env.local OrangeHRMadvance/.env.local .eslintrc.json .prettierignore .prettierrc.json .lintstagedrc.json tsconfig.json VISUAL_REGRESSION.md OrangeHRMadvance/VISUAL_REGRESSION.md playwright-e2e.SKILL.md OrangeHRMadvance/playwright-e2e.SKILL.md
-git add .gitignore
-git commit -m "chore: stop tracking local config and report files"
-git push origin main
-OrangeHRMadvance/.eslintrc.json
-.prettierignore
-OrangeHRMadvance/.prettierignore
-.prettierrc.json
-OrangeHRMadvance/.prettierrc.json
-.lintstagedrc.json
-OrangeHRMadvance/.lintstagedrc.json
-.percy.yml
-OrangeHRMadvance/.percy.yml
+# Playwright Authentication State Cache
+automation/.playwright/auth/
 
-# Project documentation and config files to ignore
-IMPLEMENTATION_GUIDE.md
-OrangeHRMadvance/IMPLEMENTATION_GUIDE.md
-QUICK_REFERENCE.md
-OrangeHRMadvance/QUICK_REFERENCE.md
-tsconfig.json
-OrangeHRMadvance/tsconfig.json
-VISUAL_REGRESSION.md
-OrangeHRMadvance/VISUAL_REGRESSION.md
-playwright-e2e.SKILL.md
-OrangeHRMadvance/playwright-e2e.SKILL.md
+# Environment Configurations
+automation/.env.local
+automation/.env.*.local
 
-# Test results directory
-OrangeHRMadvance/test-results/
-test-results/
-
-# Important documentation and config (DO NOT IGNORE)
-!README.md
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini

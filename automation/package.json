@@ -1,0 +1,32 @@
+{
+  "name": "playwright-ai-framework",
+  "version": "1.0.0",
+  "description": "Production-ready Playwright automation framework using TypeScript",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --project=chromium",
+    "test:api": "npx playwright test --grep @api",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:accessibility": "npx playwright test --grep @accessibility",
+    "build": "tsc --noEmit",
+    "mcp:start": "npx tsx src/mcp/mcp-server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.9.1",
+    "@playwright/test": "^1.45.1",
+    "@types/node": "^20.14.9",
+    "dotenv": "^16.4.5",
+    "tsx": "^4.23.0",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

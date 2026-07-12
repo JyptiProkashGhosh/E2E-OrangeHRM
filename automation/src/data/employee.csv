@@ -1,0 +1,5 @@
+firstName,lastName,employeeId,jobTitle,status
+John,Doe,100234,QA Engineer,Full-Time Permanent
+Jane,Smith,100235,Software Developer,Full-Time Permanent
+Bob,Johnson,100236,HR Specialist,Part-Time
+Alice,Brown,100237,Product Owner,Full-Time Permanent

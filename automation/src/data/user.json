@@ -1,0 +1,16 @@
+{
+  "validUser": {
+    "email": "eve.holt@reqres.in",
+    "password": "cityslicka",
+    "role": "Admin",
+    "firstName": "Eve",
+    "lastName": "Holt"
+  },
+  "invalidUser": {
+    "email": "invalid.user@reqres.in",
+    "password": "wrongpassword",
+    "role": "User",
+    "firstName": "Invalid",
+    "lastName": "User"
+  }
+}
